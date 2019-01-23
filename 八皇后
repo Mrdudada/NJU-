@@ -1,0 +1,52 @@
+#include<cstdio>
+#include<cstdlib>
+
+const int maxn = 100;
+bool hashTable[maxn] = {false};
+int P[maxn],count=0,n;
+
+void generate(int index)
+{
+	if(index == n + 1)		//出现一个全排列
+	{
+		bool flag = true;
+		for(int i = 1;i<=n;i++)
+		{
+			for(int j = i+1;j<=n;j++)
+			{
+				if(abs(i-j) == abs(P[i]-P[j]))
+				{
+					flag = false;
+					//for(int k = 1; k < n + 1; k++)
+					//{printf("%d",P[k]);}
+					//printf("\n");
+
+				}
+			}
+		}
+		if(flag)
+			count++;
+		return;
+	}
+	else
+	{
+		for(int i = 1;i<=n;i++)		//递归算法生成全排列
+		{
+			if(hashTable[i]!= true)
+			{
+				hashTable[i] = true;
+				P[index] = i;
+				generate(index+1);
+				hashTable[i] = false;	
+			}
+		}
+	}
+}
+
+int main()
+{
+	scanf("%d",&n);
+	generate(1);
+	printf("%d",count);
+	return 0;
+}
