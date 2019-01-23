@@ -1,0 +1,51 @@
+#include <cstdio>
+#include <cstdlib>
+
+const int maxn = 100;
+int n,P[maxn],count = 0;
+bool hashTable[maxn] = {false};
+
+void generate(int index)
+{
+	if(index == n+1)		//出现了全排列，在回溯算法的思想下，但凡能走到这一步，一定是可以满足条件的
+	{
+		count++;
+		return;
+	}
+	else
+	{
+		for(int i = 1; i<=n;i++)
+		{
+			if(hashTable[i] == false)		//未经排列
+			{
+				bool flag = true;
+				for(int j = 1;j<index;j++)
+				{
+					if(abs(j-index) == abs(P[j]-i))			//不需要继续向下递归，此时已经不满足条件
+					{
+						flag = false;
+						break;
+						//return;
+					}
+				}
+				if(flag)
+				{
+					//count++;
+					hashTable[i] = true;
+					P[index] = i;
+					generate(index+1);
+					hashTable[i] = false;
+				}
+				
+			}
+		}
+	}
+}
+
+int main()
+{
+	scanf("%d",&n);
+	generate(1);
+	printf("%d",count);
+	return 0;
+}
