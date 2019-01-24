@@ -1,0 +1,52 @@
+#include<cstdio>
+#include <algorithm>
+
+using namespace std;
+
+struct mooncake
+{
+	double kucun;		//库存
+	double shoujia;	//总售价
+	double price;		//单价
+};
+mooncake cake[1010];
+bool cmp(mooncake a,mooncake b)		//比较排序函数cmp
+{
+	return a.price>b.price;
+}
+
+
+int main()
+{
+	int N;		//月饼种类
+	double D;		//市场最大需求
+	double profit = 0;		//总收益
+	scanf("%d%lf",&N,&D);
+	for(int i = 0;i<N;i++)
+	{
+		scanf("%lf",&cake[i].kucun);
+	}
+	for(int i = 0;i<N;i++)
+	{
+		scanf("%lf",&cake[i].shoujia);
+		cake[i].price = cake[i].shoujia/cake[i].kucun;		//求出单价
+	}
+	sort(cake,cake+N,cmp);		//按照单价从高到低排序
+	double k = D;		//剩余月饼需求量
+	for(int i = 0;(i<N)&&(k!=0);i++)		//按照单价高低依次销售月饼
+	{
+		if(k>=cake[i].kucun)		//需求量>=该类型月饼的库存，then该类型月饼全部卖完
+			{
+				profit = profit + cake[i].shoujia;
+				k-=cake[i].kucun;
+			}
+		else
+		{
+			profit = profit+cake[i].price*k;
+			k = 0;
+		}
+	}
+	printf("%.2f\n",profit);
+	
+	return 0;
+}
